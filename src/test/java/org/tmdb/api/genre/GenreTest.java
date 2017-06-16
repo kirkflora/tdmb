@@ -148,7 +148,7 @@ public class GenreTest {
         String response = ResponseReader.getResponseString(connection);
 
         JSONObject jsonObject = new JSONObject(response);
-        //jsonObject.get("");
+        assertEquals(JSONParser.getListItemNameById(jsonObject.get(Keys.GENRES), 28), Genre.ACTION.getKorean(), "Genre Mismatch");
 
         //...Verify all Genres
 
