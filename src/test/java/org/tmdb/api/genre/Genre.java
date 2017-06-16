@@ -4,26 +4,26 @@ package org.tmdb.api.genre;
  * Created by flora on 6/15/2017.
  */
 public enum Genre {
-
-    ACTION(28, "Action", "", ""),
-    ADVENTURE(12, "Adventure", "", ""),
-    ANIMATION(16, "Animation", "", ""),
-    COMEDY(35, "Comedy", "", ""),
-    CRIME(80, "Crime", "", ""),
-    DOCUMENTARY(99, "Documentary", "", ""),
-    DRAMA(18, "Drama", "", ""),
-    FAMILY(10751, "Family", "", ""),
-    FANTASY(14, "Fantasy", "", ""),
-    HISTORY(36, "History", "", ""),
-    HORROR(27, "Horror", "", ""),
-    MUSIC(10402, "Music", "", ""),
-    MYSTERY(9648, "Mystery", "", ""),
-    ROMANCE(10749, "Romance", "", ""),
-    SCIENCE_FICTION(878, "Science Fiction", "", ""),
-    TV_MOVIE(10770, "TV Movie", "", ""),
-    THRILLER(53, "Thriller", "", ""),
-    WAR(10752, "War", "", ""),
-    WESTERN(37, "Western", "", "");
+//,{"id":878,"name":""},{"id":10770,"name":""},{"id":53,"name":""},{"id":10752,"name":""},{"id":37,"name":""}]}
+    ACTION(28, "Action", "Action", "액션"),
+    ADVENTURE(12, "Adventure", "Aventure", "모험"),
+    ANIMATION(16, "Animation", "Animation", "애니메이션"),
+    COMEDY(35, "Comedy", "Comédie", "코미디"),
+    CRIME(80, "Crime", "Crime", "범죄"),
+    DOCUMENTARY(99, "Documentary", "Documentaire", "다큐멘터리"),
+    DRAMA(18, "Drama", "Drame", "드라마"),
+    FAMILY(10751, "Family", "Familial", "가족"),
+    FANTASY(14, "Fantasy", "Fantastique", "판타지"),
+    HISTORY(36, "History", "Histoire", "역사"),
+    HORROR(27, "Horror", "Horreur", "공포"),
+    MUSIC(10402, "Music", "Musique", "음악"),
+    MYSTERY(9648, "Mystery", "Mystère", "미스터리"),
+    ROMANCE(10749, "Romance", "Romance", "로맨스"),
+    SCIENCE_FICTION(878, "Science Fiction", "Science-Fiction", "SF"),
+    TV_MOVIE(10770, "TV Movie", "Téléfilm", "TV 영화"),
+    THRILLER(53, "Thriller", "Thriller", "스릴러"),
+    WAR(10752, "War", "Guerre", "전쟁"),
+    WESTERN(37, "Western", "Western", "서부");
 
     String english;
     String french;
@@ -40,12 +40,16 @@ public enum Genre {
     public String getEnglish() {
         return english;
     }
+    public String getFrench() {
+        return french;
+    }
+    public String getKorean() {
+        return korean;
+    }
 
     public int getId() {
         return id;
     }
-
-//{"genres":[{"id":28,"name":"Action"},{"id":12,"name":"Aventure"},{"id":16,"name":"Animation"},{"id":35,"name":"Comédie"},{"id":80,"name":"Crime"},{"id":99,"name":"Documentaire"},{"id":18,"name":"Drame"},{"id":10751,"name":"Familial"},{"id":14,"name":"Fantastique"},{"id":36,"name":"Histoire"},{"id":27,"name":"Horreur"},{"id":10402,"name":"Musique"},{"id":9648,"name":"Mystère"},{"id":10749,"name":"Romance"},{"id":878,"name":"Science-Fiction"},{"id":10770,"name":"Téléfilm"},{"id":53,"name":"Thriller"},{"id":10752,"name":"Guerre"},{"id":37,"name":"Western"}]}
 
 }
 

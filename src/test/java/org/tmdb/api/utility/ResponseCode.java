@@ -1,4 +1,4 @@
-package org.tmdb.api;
+package org.tmdb.api.utility;
 
 /**
  * Created by flora on 6/15/2017.
@@ -6,6 +6,7 @@ package org.tmdb.api;
 public enum ResponseCode {
 
     SUCCESS(200),
+    INTERNAL_SERVER_ERROR(500),
     UNAUTHORIZED(401),
     NOT_FOUND(404);
 

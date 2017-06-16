@@ -1,4 +1,4 @@
-package org.tmdb.api;
+package org.tmdb.api.utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;

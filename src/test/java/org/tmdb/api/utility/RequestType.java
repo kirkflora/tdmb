@@ -1,4 +1,4 @@
-package org.tmdb.api;
+package org.tmdb.api.utility;
 
 /**
  * Created by flora on 6/15/2017.

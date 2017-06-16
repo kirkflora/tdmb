@@ -1,4 +1,4 @@
-package org.tmdb.api;
+package org.tmdb.api.utility;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;

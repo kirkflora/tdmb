@@ -5,11 +5,10 @@ import static org.testng.Assert.*;
 
 import org.json.JSONObject;
 import org.testng.annotations.Test;
-import org.tmdb.api.*;
+import org.tmdb.api.utility.*;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 
 
@@ -26,7 +25,8 @@ import java.net.URL;
  * TC8: Genre Categories do not contain duplicates
  * TC9: language french will returns result set with success return code
  * TC10: language korean will returns result set with success return code
- * TC11: invalid language -
+ * TC11: invalid language - will return 500 or defined Error - this is missing from the API specification
+ * TC12: invalid parameter - will return 500 or defined Error - this is missing from the API specification
  *
  */
 
@@ -39,7 +39,7 @@ public class GenreTest {
      * TC1: All required valid Parameters returns result set with success return code
      */
     @Test
-    public void genreIsSorted()throws IOException {
+    public void genreValidRequest()throws IOException {
         assertNotNull(apiDevKey, "API Key was not provided");
 
         //Build URL with expected parameters and make request
@@ -51,10 +51,66 @@ public class GenreTest {
         String response = ResponseReader.getResponseString(connection);
 
         JSONObject jsonObject = new JSONObject(response);
-        //jsonObject.get("");
 
+        assertEquals(JSONParser.getListItemNameById(jsonObject.get("genres"), 28), Genre.ACTION.getEnglish(), "Genre Mismatch");
+
+        //...Verify all Genres
     }
 
+    /**
+     * TC2: Missing devKey returns 401 Unauthorized
+     */
+    @Test
+    public void genreMissingApiKey()throws IOException {
+
+        //Build URL with expected parameters and make request
+        URL url = new URLBuilder(API.GENRE.getFullURL()).addParameter("language=en").build();
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod(RequestType.GET.toString());
+
+
+        String response = ResponseReader.getResponseString(connection);
+        assertEquals(connection.getResponseCode(), ResponseCode.UNAUTHORIZED.getValue(),
+                "Response code not found " + ResponseCode.UNAUTHORIZED + " Actual Response: " + response);
+    }
+
+    /**
+     * TC3: Invalid devKey returns 401 Unauthorized
+     */
+    @Test
+    public void genreInvalidApiKey()throws IOException {
+        //Build URL with expected parameters and make request
+        final String invalidKey = "007";
+        URL url = new URLBuilder(API.GENRE.getFullURL()).addParameter("api_key=" + invalidKey).addParameter("language=en").build();
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod(RequestType.GET.toString());
+
+        String response = ResponseReader.getResponseString(connection);
+        assertEquals(connection.getResponseCode(), ResponseCode.UNAUTHORIZED.getValue(),
+                "Response code not found " + ResponseCode.UNAUTHORIZED + " with invalid API Key: " + invalidKey + "  Actual Response: " + response);
+    }
+
+    /**
+     * TC8: Genre Categories do not contain duplicates
+     */
+    @Test
+    public void genreListedOnce()throws IOException {
+        assertNotNull(apiDevKey, "API Key was not provided");
+
+        //Build URL with expected parameters and make request
+        URL url = new URLBuilder(API.GENRE.getFullURL()).addParameter("api_key=" + apiDevKey).addParameter("language=en").build();
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod(RequestType.GET.toString());
+
+        assertEquals(connection.getResponseCode(), ResponseCode.SUCCESS.getValue(), "Response code not found " + ResponseCode.SUCCESS);
+        String response = ResponseReader.getResponseString(connection);
+
+        JSONObject jsonObject = new JSONObject(response);
+
+        //TODO: Get size of genre list
+        //TODO: Put list into Set to isolate unique values
+        //TODO: Verify that Set size is equal to the returned genre list
+    }
     /**
      * TC9: language french will returns result set with success return code
      */
@@ -71,8 +127,9 @@ public class GenreTest {
         String response = ResponseReader.getResponseString(connection);
 
         JSONObject jsonObject = new JSONObject(response);
-        //jsonObject.get("");
+        assertEquals(JSONParser.getListItemNameById(jsonObject.get(Keys.GENRES), 28), Genre.ACTION.getFrench(), "Genre Mismatch");
 
+        //...Verify all Genres
     }
 
     /**
@@ -93,22 +150,32 @@ public class GenreTest {
         JSONObject jsonObject = new JSONObject(response);
         //jsonObject.get("");
 
-    }
+        //...Verify all Genres
 
+    }
     /**
-     * Verify that there is only one occurrence of each value in the list of Genres returned
+     * TC11: invalid language - Expect Defined ERROR Code (This is actually a bug with the genre endpoint)
+     * If you look at the response on the failure message - the API returns null values when an invalid language is
+     * provided
      */
     @Test
-    public void genreListedOnce(){
+    public void genreLanguageInvalid()throws IOException {
+        assertNotNull(apiDevKey, "API Key was not provided");
+
+        //Build URL with expected parameters and make request
+        URL url = new URLBuilder(API.GENRE.getFullURL()).addParameter("api_key=" + apiDevKey).addParameter("language=tkdko").build();
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod(RequestType.GET.toString());
+
+
+        String response = ResponseReader.getResponseString(connection);
+        assertEquals(connection.getResponseCode(), ResponseCode.INTERNAL_SERVER_ERROR.getValue(),
+                "Response code not found " + ResponseCode.INTERNAL_SERVER_ERROR + " Actual Response: " + response);
+
 
     }
 
-    /**
-     * Verify unauthorized when api_key is missing
-     */
-    @Test
-    public void genreUnauthorized(){
 
-    }
+
 
 }
