@@ -91,9 +91,24 @@ public class GenreTest {
     }
 
     /**
-     * TC8: Genre Categories do not contain duplicates
+     * TC4: Invalid endpoint extension of genre returns 404 - Not Found
      */
     @Test
+    public void genreInvalidEndpoint()throws IOException {
+        assertNotNull(apiDevKey, "API Key was not provided");
+        //Build URL with expected parameters and make request
+        URL url = new URLBuilder(API.GENRE.getFullURL() + "/invalid").addParameter("api_key=" + apiDevKey).addParameter("language=en").build();
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        connection.setRequestMethod(RequestType.GET.toString());
+
+        String response = ResponseReader.getResponseString(connection);
+        assertEquals(connection.getResponseCode(), ResponseCode.NOT_FOUND.getValue(), "Response code not found " + ResponseCode.NOT_FOUND);
+    }
+
+    /**
+     * TC8: Genre Categories do not contain duplicates
+     */
+    @Test(enabled = false)
     public void genreListedOnce()throws IOException {
         assertNotNull(apiDevKey, "API Key was not provided");
 
